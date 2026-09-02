@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASAP Tickets — Agent Hub | Created by Ageon</title>
+<style>
+:root{--blue:#0072bc;--blue2:#00a0e3;--blueD:#005a94;--red:#ee3e42;--navy:#0a2540;--navy2:#123a63;--bg:#f2f7fd;--card:#fff;--line:#d8e4f0;--text:#12283f;--muted:#5b7a99;--r:16px;--gb:linear-gradient(135deg,#00a0e3,#0072bc 55%,#005a94);--gr:linear-gradient(135deg,#ff6b6e,#ee3e42 60%,#d92c30)}
+*{box-sizing:border-box}body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--text);background:var(--bg)}
+#errorBanner{display:none;background:#fdeceb;color:#b3121f;border-left:5px solid var(--red);padding:12px 20px;font-weight:700;white-space:pre-wrap}
+.top-rule{height:4px;background:var(--red)}
+.site-header{background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:900}
+.header-inner{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}.brand-plane{width:42px;height:42px;background:var(--gr);color:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px}.brand-name{font-size:23px;font-weight:900}.brand-name .bn1{background:var(--gb);-webkit-background-clip:text;color:transparent}.brand-name .bn2{color:#8a949c;font-weight:400;letter-spacing:3px}.hub-tag{background:var(--navy);color:#fff;font-size:10px;font-weight:800;padding:5px 9px;border-radius:3px}
+.header-right{display:flex;align-items:center;gap:12px}.phone-chip{color:#16a34a;font-size:13px;font-weight:800}.owner-badge{background:var(--gr);color:#fff;font-size:11px;font-weight:800;padding:6px 12px;border-radius:999px}
+.menu{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;gap:6px;flex-wrap:wrap}.menu button{background:none;border:none;font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);padding:13px 16px;cursor:pointer;border-bottom:3px solid transparent}.menu button.active{color:var(--blue);box-shadow:inset 0 -3px 0 var(--red)}
+.hero{padding:70px 20px 130px;text-align:center;color:#fff;background:linear-gradient(165deg,#0a2540,#0d3f6e 45%,#0072bc)}
+.hero .red-tag{display:inline-block;background:var(--gr);color:#fff;font-size:12px;font-weight:800;letter-spacing:2px;padding:8px 16px;border-radius:999px;margin-bottom:16px}
+.hero h1{margin:0 0 14px;font-size:clamp(2rem,5vw,3.4rem);font-weight:900}.hero p{max-width:640px;margin:0 auto;font-size:16px;color:#dcecfb}
+main{max-width:1200px;margin:-70px auto 50px;padding:0 20px;position:relative;z-index:5}
+.tab-content{display:none}.tab-content.active{display:block}
+.cols{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 12px 32px rgba(10,37,64,.10);overflow:hidden}.card::before{content:"";display:block;height:4px;background:var(--gb)}
+.left-col{flex:.9;min-width:320px}.right-col{flex:1.1;min-width:360px}
+.widget-tabs{display:flex;border-bottom:1px solid var(--line);background:#f6fafe}.wtab{flex:1;border:none;background:none;color:var(--muted);font-weight:800;font-size:13px;padding:15px;cursor:pointer}.wtab.active{background:#fff;color:var(--blue);box-shadow:inset 0 -3px 0 var(--red)}
+.widget-body{padding:20px}
+label{display:block;font-size:12px;font-weight:800;color:var(--navy);margin:12px 0 6px}
+input,textarea,select{width:100%;border:1.5px solid var(--line);border-radius:10px;background:#f8fbfe;color:var(--text);font-family:inherit;font-size:14px;font-weight:600;padding:11px 12px}
+textarea{min-height:70px;resize:vertical}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.field-grid .full{grid-column:1/-1}@media(max-width:700px){.field-grid{grid-template-columns:1fr}}
+.badge{font-size:10px;font-weight:800;border-radius:999px;padding:5px 11px}.badge.customer{background:#e3f1fb;color:var(--blueD)}.badge.internal{background:#fdeaea;color:#c9332c}
+.btn{border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:800;transition:.15s}
+.btn-red{background:var(--gr);color:#fff;padding:14px 24px;font-size:15px}.btn-blue{background:var(--gb);color:#fff}.btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--navy)}.btn-danger{background:#fff1f0;border:1.5px solid #fecaca;color:var(--red)}.btn-sm{padding:7px 13px;font-size:12px}.btn-warn{background:#fff8e1;border:1.5px solid #f0b429;color:#8a6d1b}.btn-green{background:#16a34a;color:#fff}
+.action-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.small-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px}
+.output-bar{background:linear-gradient(90deg,var(--navy),var(--navy2));padding:12px 18px;font-weight:800;display:flex;justify-content:space-between;align-items:center;color:#fff}
+#output{background:#fff;padding:22px;min-height:480px;max-height:74vh;overflow:auto;white-space:pre-wrap;font-size:14px;line-height:1.7}
+.airline-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.airline-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.airline-card h3{margin:0 0 10px;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.code-tag{background:var(--gb);color:#fff;border-radius:8px;padding:3px 10px 5px;font-size:12px;font-weight:800;margin-right:8px}
+.airline-card p{margin:6px 0;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-weight:700}.airline-card p .val{color:var(--text);overflow-wrap:anywhere}
+.panel-body{padding:22px}.section-box{border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;background:#f8fbfe}.data-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.calc-out{white-space:pre-wrap;background:#f8fbfe;border:1.5px solid var(--line);border-radius:10px;padding:14px;min-height:120px;font-weight:700;font-size:13px;line-height:1.7}
+.timer-display{font-size:70px;font-weight:900;letter-spacing:2px;margin:12px 0;background:var(--gb);-webkit-background-clip:text;color:transparent}
+.timer-display.alarm{background:var(--gr);-webkit-background-clip:text;color:transparent;animation:blink 1s steps(2,start) infinite}@keyframes blink{50%{opacity:.35}}
+#toast{position:fixed;bottom:26px;right:26px;z-index:1200;background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;padding:14px 24px;border-radius:12px;border-left:5px solid var(--red);font-weight:800;font-size:14px;opacity:0;transform:translateY(14px);pointer-events:none;transition:.25s}#toast.show{opacity:1;transform:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,37,64,.55);z-index:1000;justify-content:center;align-items:center;padding:20px}
+.modal-content{background:#fff;border-radius:18px;border-top:6px solid var(--blue);width:560px;max-width:100%;max-height:86vh;overflow:auto;padding:26px}
+.close-modal{float:right;font-size:22px;font-weight:800;cursor:pointer;color:var(--muted)}
+.diag{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;font-size:13px;line-height:1.8}
+.diag b{color:var(--navy)}
+.steps{background:#f0f9ff;border-left:4px solid var(--blue2);padding:12px 16px;border-radius:8px;margin:10px 0}
+.steps ol{margin:8px 0 0 20px;padding:0}
+.steps li{margin:4px 0}
+footer{background:linear-gradient(160deg,var(--navy),var(--navy2));color:#cfe0f2;text-align:center;padding:34px 20px;font-size:13px;font-weight:700}footer .f-logo{font-weight:900;color:#fff}
+</style>
+</head>
+<body>
+<div id="errorBanner"></div><div class="top-rule"></div>
+<header class="site-header">
+ <div class="header-inner">
+  <div class="brand"><span class="brand-plane">✈</span><span class="brand-name"><span class="bn1">ASAP</span> <span class="bn2">TICKETS</span></span><span class="hub-tag" id="hubTag">AGENT HUB v58</span></div>
+  <div class="header-right"><span class="phone-chip">📞 1-800-750-2238</span><span id="ownerBadge" class="owner-badge" style="display: none;">👑 Owner Mode</span></div>
+ </div>
+ <nav class="menu">
+  <button class="active" onclick="switchTab('templates',event)">✈️ Templates</button>
+  <button onclick="switchTab('airlines',event)">📞 Airlines</button>
+  <button onclick="switchTab('tools',event)"> Tools</button>
+  <button onclick="switchTab('timer',event)">⏱ Timer</button>
+  <button id="menuDataBtn" onclick="switchTab('data',event)" class="">⚙️ Settings</button>
+ </nav>
+</header>
+<section class="hero"><div class="red-tag">INTERNAL OPERATIONS TOOL — CS TEAM</div><h1>Unlock the <em>Fastest</em> Case Handling</h1><p>Locked templates, airline desk numbers, AI assistant and a double-checked exchange calculator.</p></section>
+<main>
+ <div id="tab-templates" class="tab-content active"><div class="cols">
+  <div class="card left-col">
+   <div class="widget-tabs"><button id="wtab-customer" class="wtab active" onclick="setCategory('customer')">CUSTOMER</button><button id="wtab-internal" class="wtab" onclick="setCategory('internal')">INTERNAL</button></div>
+   <div class="widget-body">
+    <div style="display:flex;justify-content:space-between;align-items:center"><label style="margin:0">Template:</label><span id="sectionBadge" class="badge customer">CUSTOMER</span></div>
+    <select id="templateSelect" onchange="onTemplateChange()" style="margin-top:6px"><option value="GEN-QUOTE-001">General Quote &amp; Products</option></select>
+    <div id="airlineFillWrap" style="display:none"><label>Quick Airline Fill (optional):</label><select id="airlineQuickFill" onchange="autoFillAirline()"><option value="">-- Select Airline --</option><option value="DL">DL - Delta Air Lines</option><option value="UA">UA - United Airlines</option></select></div>
+    <div id="refundableWrap" style="display: block;"><label>Ticket refundable? (No = "TICKET IS NON-REFUNDABLE.")</label><select id="refundableSel"><option value="yes">Yes — refundable</option><option value="no">No — NON-refundable</option></select></div>
+    <div id="fieldsContainer" class="field-grid"><div id="wrap-passenger" style="display: block;"><label>Passenger Name:</label><input type="text" id="inp-passenger"></div><div id="wrap-agent" style="display: block;"><label>Agent Name:</label><input type="text" id="inp-agent"></div><div id="wrap-exchange" class="full" style="display: block;"><label>Exchange Fees Block:</label><textarea id="inp-exchange"></textarea></div><div id="wrap-refund" class="full" style="display: block;"><label>Refund Penalty:</label><textarea id="inp-refund"></textarea></div><div id="wrap-proof" style="display: none;"><label>Proof of Relationship:</label><input type="text" id="inp-proof"></div><div id="wrap-airline" style="display: none;"><label>Airline Code:</label><input type="text" id="inp-airline"></div><div id="wrap-pnr" style="display: none;"><label>PNR / Booking Ref:</label><input type="text" id="inp-pnr"></div><div id="wrap-rloc" class="full" style="display: none;"><label>RLOC Reference:</label><input type="text" id="inp-rloc"></div><div id="wrap-requestType" style="display: none;"><label>Request Type:</label><input type="text" id="inp-requestType"></div><div id="wrap-paxDetails" class="full" style="display: none;"><label>Passenger Details Block:</label><textarea id="inp-paxDetails"></textarea></div><div id="wrap-phone" style="display: none;"><label>Phone Number:</label><input type="text" id="inp-phone"></div><div id="wrap-calldate" style="display: none;"><label>Call was on:</label><input type="text" id="inp-calldate"></div></div>
+    <div id="customFields" class="field-grid"></div>
+    <div class="action-row"><button class="btn btn-red" onclick="generateEmail()"> Generate Email</button><button class="btn btn-ghost" onclick="clearFields()">Clear</button></div>
+   </div>
+  </div>
+  <div class="card right-col">
+   <div class="output-bar"><span>Final Email</span><span style="display:flex;gap:8px"><button id="copySubjectBtn" class="btn btn-ghost btn-sm" style="display:none" onclick="copySubject()">📋 Copy Subject</button><button class="btn btn-blue btn-sm" onclick="copyOutput()">📋 Copy Email</button></span></div>
+   <div id="output">Select a template and click "Generate Email"...</div>
+  </div>
+ </div></div>
+ <div id="tab-airlines" class="tab-content">
+  <input type="text" id="airlineSearch" placeholder="🔍 Search airline..." oninput="renderAirlines()" style="margin-bottom:16px">
+  <div id="airlineGrid" class="airline-grid"><div class="airline-card"><h3><span><span class="code-tag">DL</span>Delta Air Lines</span><span><button class="btn btn-ghost btn-sm" onclick="editAirline(0)">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteAirline(0)">Del</button></span></h3><p><strong>Region:</strong> <span class="val">USA</span></p><p><strong>Main:</strong> <span class="val">800-221-1212</span> <button class="btn btn-ghost btn-sm" onclick="copyText('800-221-1212')">Copy</button></p><p><strong>Exec:</strong> <span class="val">800-445-2493</span> <button class="btn btn-ghost btn-sm" onclick="copyText('800-445-2493')">Copy</button></p><p><strong>Email:</strong> <span class="val">agency@delta.com</span></p><p><strong>Refund:</strong> <span class="val">psgrref.delta@delta.com</span></p></div><div class="airline-card"><h3><span><span class="code-tag">UA</span>United Airlines</span><span><button class="btn btn-ghost btn-sm" onclick="editAirline(1)">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteAirline(1)">Del</button></span></h3><p><strong>Region:</strong> <span class="val">USA</span></p><p><strong>Main:</strong> <span class="val">+1-800-864-8331</span> <button class="btn btn-ghost btn-sm" onclick="copyText('+1-800-864-8331')">Copy</button></p><p><strong>Exec:</strong> <span class="val">800-521-0810</span> <button class="btn btn-ghost btn-sm" onclick="copyText('800-521-0810')">Copy</button></p><p><strong>Email:</strong> <span class="val">-</span></p><p><strong>Refund:</strong> <span class="val">-</span></p></div></div>
+ </div>
+ <div id="tab-tools" class="tab-content"><div class="cols">
+  <div class="card" style="flex:1;min-width:320px"><div class="panel-body">
+   <h2 style="margin-top:0">✨ AI Writing Assistant</h2>
+   <textarea id="gramIn" style="min-height:140px" placeholder="Paste your message..."></textarea>
+   <div class="action-row"><button class="btn btn-blue" onclick="aiProcess('fix')">✨ Fix Grammar</button><button class="btn btn-blue" onclick="aiProcess('rephrase')">🗣 Rephrase</button><button class="btn btn-ghost" onclick="localOnly()">🔧 Offline</button></div>
+   <label>Result (editable):</label><textarea id="gramOut" style="min-height:140px"></textarea>
+   <div class="action-row"><button class="btn btn-red btn-sm" onclick="copyGram()">📋 Copy result</button></div>
+  </div></div>
+  <div class="card" style="flex:1;min-width:320px"><div class="panel-body">
+   <h2 style="margin-top:0">🧮 Exchange Fare / Tax Calculator</h2>
+   <label>OLD pricing:</label><textarea id="calcOld" style="min-height:100px" placeholder="FARE USD507.00 TAX 5.60AY ... TOT USD1009.03"></textarea>
+   <label>NEW pricing:</label><textarea id="calcNew" style="min-height:100px" placeholder="FARE USD 963.00 TAX AY 5.60 ... TOT USD 1486.33"></textarea>
+   <div class="action-row"><button class="btn btn-blue" onclick="calcFareTax()">🧮 Calculate + Verify</button><button class="btn btn-red btn-sm" onclick="copyCalc()">📋 Copy result</button></div>
+   <label>Result:</label><div id="calcOut" class="calc-out">The result will appear here...</div>
+  </div></div>
+ </div></div>
+ <div id="tab-timer" class="tab-content"><div class="card" style="max-width:640px;margin:0 auto"><div class="panel-body" style="text-align:center">
+  <div id="timerDisplay" class="timer-display">00:00</div>
+  <div id="timerStatus" style="color:var(--muted);font-weight:700;margin-bottom:14px">Ready.</div>
+  <div style="display:flex;gap:10px;justify-content:center"><input type="number" id="timerMin" value="15" style="width:80px"><span>min</span><input type="number" id="timerSec" value="0" style="width:80px"><span>sec</span></div>
+  <div class="action-row" style="justify-content:center"><button class="btn btn-red" onclick="startTimer()">▶ Start</button><button class="btn btn-blue" onclick="pauseTimer()">⏸ Pause</button><button class="btn btn-ghost" onclick="resetTimer()">↺ Reset</button><button class="btn btn-danger" onclick="stopAlarm()">🔕 Stop Alarm</button></div>
+ </div></div></div>
+ <div id="tab-data" class="tab-content"><div class="cols">
+  <div class="card" style="flex:1;min-width:320px"><div class="panel-body">
+   <h2 style="margin-top:0">Share &amp; Sync 👑</h2>
+   <div class="section-box"><strong> GitHub token</strong>
+    <div class="small-note">Fine-grained token with Contents R/W on asap-hub-7g3k.</div>
+    <div class="data-actions"><input type="password" id="ghTokenInput" placeholder="github_pat_..." style="flex:1"><button class="btn btn-blue btn-sm" onclick="saveGhToken(el('ghTokenInput').value)">Save Token</button></div>
+   </div>
+   <div class="section-box"><strong>🔍 Test Connection</strong>
+    <div class="small-note">Diagnose token/repo issues BEFORE pushing.</div>
+    <div class="data-actions"><button class="btn btn-ghost btn-sm" onclick="testConnection()">🔍 Test Connection</button></div>
+    <div id="diagOut"><div class="diag"><b>✅ Repo exists:</b> yes<br><b>Name:</b> ageonz/asap-hub-7g3k<br><b>Default branch:</b> main<br><b>Private:</b> no<br><b>Description:</b> (none)</div><div class="diag">⚠️ <b>Contents read:</b> HTTP 404 — file doesn't exist yet (fresh repo). The push will CREATE it. ✅</div></div>
+   </div>
+   <div class="section-box"><strong>🚀 Website sync</strong>
+    <div class="data-actions">
+     <button class="btn btn-red btn-sm" id="syncBtn" onclick="syncWebsite()">🚀 Update Website</button>
+     <button class="btn btn-blue btn-sm" onclick="publishDataJSON()">☁️ Publish data only</button>
+     <button class="btn btn-ghost btn-sm" onclick="pullFromGitHub()">🔄 Pull latest</button>
+    </div>
+   </div>
+   <div class="section-box"><strong> GitHub Pages helpers</strong>
+    <div class="small-note">Your repo is public. Enable Pages to make the site live.</div>
+    <div class="data-actions">
+     <button class="btn btn-green btn-sm" onclick="enablePages()">🌐 Enable GitHub Pages</button>
+     <button class="btn btn-blue btn-sm" onclick="verifyLiveSite()">✅ Verify Live Site</button>
+    </div>
+   </div>
+   <div class="section-box"><strong>📁 Manual Upload (last resort)</strong>
+    <div class="small-note">If the button still fails, download both files and upload manually.</div>
+    <div class="data-actions">
+     <button class="btn btn-ghost btn-sm" onclick="downloadIndexHtml()">️ Download index.html</button>
+     <button class="btn btn-ghost btn-sm" onclick="downloadDataJson()">⬇️ Download data.json</button>
+    </div>
+    <div class="steps">
+     <b>Manual upload steps:</b>
+     <ol>
+      <li>Click both download buttons above</li>
+      <li>Go to <a target="_blank" href="https://github.com/ageonz/asap-hub-7g3k">github.com/ageonz/asap-hub-7g3k</a></li>
+      <li>Click <b>"Add file"</b> → <b>"Upload files"</b></li>
+      <li>Drag both downloaded files</li>
+      <li>Click <b>"Commit changes"</b></li>
+      <li>Then click <b>"Enable GitHub Pages"</b> above</li>
+     </ol>
+    </div>
+   </div>
+   <div class="section-box"><strong>⚠️ Start Fresh on GitHub</strong>
+    <div class="small-note">Deletes repo and recreates it empty with an initial commit.</div>
+    <div class="data-actions">
+     <button class="btn btn-warn btn-sm" onclick="startFresh()">⚠️ Start Fresh on GitHub</button>
+     <a class="btn btn-ghost btn-sm" style="text-decoration:none;display:inline-flex;align-items:center" target="_blank" href="https://github.com/ageonz/asap-hub-7g3k/settings"> Open repo settings</a>
+    </div>
+   </div>
+   <div class="section-box"><strong>📤 Offline team copy</strong>
+    <div class="data-actions"><button class="btn btn-red btn-sm" onclick="exportUpdatedFile()">📤 Export Updated File</button></div>
+   </div>
+   <div class="section-box"><strong>Backup / Restore / Reset</strong>
+    <div class="data-actions"><button class="btn btn-ghost btn-sm" onclick="exportAllJSON()">⬇️ Backup</button><label class="btn btn-ghost btn-sm" style="margin:0;cursor:pointer">⬆️ Restore<input type="file" accept=".json" style="display:none" onchange="importAllJSON(event)"></label><button class="btn btn-danger btn-sm" onclick="resetAllData()">⚠️ Reset</button></div>
+   </div>
+  </div></div>
+ </div>
+  <div class="card" style="margin-top:20px"><div class="panel-body">
+   <h2 style="margin-top:0">Template Builder 👑</h2>
+   <label>Select template to edit:</label><select id="editTemplateSelect" onchange="loadTemplateForEdit()"><option value="NEW">+ New Template</option><option value="GEN-QUOTE-001">General Quote &amp; Products (customer)</option><option value="ID-REQ-001">ID Request / Airline Waiver (internal)</option></select>
+   <div class="field-grid"><div><label>Template Name:</label><input id="tplName"></div><div><label>Section:</label><select id="tplCategory"><option value="customer">Customer</option><option value="internal">Internal</option></select></div></div>
+   <label>Template Text ({{PLACEHOLDERS}}):</label><textarea id="tplText" style="min-height:200px"></textarea>
+   <div class="action-row"><button class="btn btn-red" onclick="saveTemplate()">💾 Save Template</button><button class="btn btn-ghost" onclick="undoLastTemplateSave()">↩ Undo</button><button id="btnDeleteTemplate" class="btn btn-danger" style="display: inline-block;" onclick="deleteTemplate()">Delete</button></div>
+  </div></div>
+  <div class="card" style="margin-top:20px"><div class="panel-body">
+   <h2 style="margin-top:0">Airline Manager 👑</h2>
+   <div class="data-actions" style="margin-top:0"><button class="btn btn-blue btn-sm" onclick="openAddAirlineModal()">+ Add Airline</button></div>
+  </div></div>
+ </div>
+</main>
+<footer><div class="f-logo">✈ ASAP TICKETS — Agent Hub</div>Internal tool for the CS team.<br>Created with ♥ by <strong style="color:#fff">Ageon</strong> • <span id="year">2026</span></footer>
+<div id="toast" class=""></div>
+<div id="freshModal" class="modal" style="display: none;"><div class="modal-content">
+ <h2 style="margin-top:0">⚠️ Start Fresh on GitHub</h2>
+ <p>This will <b>DELETE</b> the repo <b>ageonz/asap-hub-7g3k</b> and recreate it empty. All history lost.</p>
+ <p style="color:var(--red);font-weight:700">This cannot be undone.</p>
+ <div class="action-row" style="justify-content:flex-end">
+  <button class="btn btn-ghost" onclick="closeFreshModal()">Cancel</button>
+  <button class="btn btn-danger" onclick="confirmStartFresh()">Yes, delete and recreate</button>
+ </div>
+</div></div>
+<div id="pagesModal" class="modal" style="display: none;"><div class="modal-content">
+ <h2 style="margin-top:0"> Enable GitHub Pages</h2>
+ <div class="steps">
+  <b>Follow these steps in the new tab:</b>
+  <ol>
+   <li>On the Pages settings page, find <b>"Build and deployment"</b></li>
+   <li>Under <b>"Source"</b>, select <b>"Deploy from a branch"</b></li>
+   <li>Under <b>"Branch"</b>, select <b>"main"</b> and folder <b>"/ (root)"</b></li>
+   <li>Click <b>Save</b></li>
+   <li>Wait <b>60 seconds</b></li>
+   <li>Visit <b>https://ageonz.github.io/asap-hub-7g3k/</b></li>
+  </ol>
+ </div>
+ <div class="action-row" style="justify-content:flex-end">
+  <button class="btn btn-ghost" onclick="closePagesModal()">Close</button>
+  <a class="btn btn-blue" style="text-decoration:none;display:inline-flex;align-items:center" target="_blank" href="https://github.com/ageonz/asap-hub-7g3k/settings/pages">Open Pages Settings →</a>
+ </div>
+</div></div>
+<div id="verifyModal" class="modal" style="display: none;"><div class="modal-content">
+ <h2 style="margin-top:0">✅ Verify Live Site</h2>
+ <div class="steps">
+  <b>What do you see at https://ageonz.github.io/asap-hub-7g3k/ ?</b>
+  <ul style="margin:8px 0 0 20px">
+   <li>✅ <b>Your Agent Hub</b> → You're live! 🎉</li>
+   <li>⚠️ <b>404 page</b> → GitHub Pages isn't enabled yet. Click "Enable GitHub Pages" above.</li>
+   <li>🔄 <b>Old version</b> → Wait 60 seconds and refresh (GitHub caches).</li>
+  </ul>
+ </div>
+ <div class="action-row" style="justify-content:flex-end">
+  <button class="btn btn-ghost" onclick="closeVerifyModal()">Close</button>
+  <a class="btn btn-blue" style="text-decoration:none;display:inline-flex;align-items:center" target="_blank" href="https://ageonz.github.io/asap-hub-7g3k/">Open Live Site →</a>
+ </div>
+</div></div>
+<script id="masterData" type="application/json">null</script>
+<script id="bakedState" type="application/json">{"templates":[{"id":"GEN-QUOTE-001","name":"General Quote & Products","category":"customer","text":"Dear {{PASSENGER}},\n\nAs advised, no changes were made to your reservation, and below you can find the airline's rules regarding exchanges and refunds.\n\nEXCHANGE:\n{{EXCHANGE}}\n\nREFUND\n{{REFUND}}\n\nSincerely,\n{{AGENT}}"},{"id":"ID-REQ-001","name":"ID Request / Airline Waiver","category":"internal","text":"Request to {{AIRLINE}} Airline by Asap Tickets, ITN Corp regarding PNR: {{PNR}}\n\nDear Team,\nKindly assist with requesting a {{REQUEST_TYPE}}.\n\nDear {{AIRLINE}} Team,\n{{PAX_DETAILS}}\nPlease let us know if we can proceed.\nThank you."}],"airlines":[{"code":"DL","name":"Delta Air Lines","region":"USA","mainPhone":"800-221-1212","execPhone":"800-445-2493","execEmail":"agency@delta.com","refundEmail":"psgrref.delta@delta.com","medicalEmail":"","notes":"Consolidator desk."},{"code":"UA","name":"United Airlines","region":"USA","mainPhone":"+1-800-864-8331","execPhone":"800-521-0810","execEmail":"","refundEmail":"","medicalEmail":"","notes":"Executive desk."}],"ownerLock":true}</script>
+<div id="addAirlineModal" class="modal" style="display: none;"><div class="modal-content"><span class="close-modal" onclick="closeModal()">×</span>
+ <h2 style="margin-top:0">Add / Edit Airline</h2><input type="hidden" id="editAirlineIdx">
+ <label>Code:</label><input id="mod-code"><label>Name:</label><input id="mod-name"><label>Region:</label><input id="mod-region"><label>Main Phone:</label><input id="mod-mainPhone"><label>Exec Phone:</label><input id="mod-execPhone"><label>Exec Email:</label><input id="mod-execEmail"><label>Refund Email:</label><input id="mod-refundEmail"><label>Medical Email:</label><input id="mod-medicalEmail"><label>Notes:</label><textarea id="mod-notes"></textarea>
+ <div class="action-row"><button class="btn btn-blue" onclick="saveAirline()">Save Airline</button></div>
+</div></div>
+<script>
+// ASAP AGENT HUB v58 — FINAL. Bulletproof push, manual fallback, verified calculator.
+var OWNER_LETTER="Q",HUB_VERSION="v58",GH_OWNER='ageonz',GH_REPO='asap-hub-7g3k',GH_FULL=GH_OWNER+'/'+GH_REPO;
+var DATA_URL='https://raw.githubusercontent.com/'+GH_FULL+'/main/data.json';
+var GH_TOKEN_KEY='asap_hub_gh_token',GEMINI_KEY_STORE='asap_gemini_key';
+var DEFAULT_GH_TOKEN='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';
+var DEFAULT_GEMINI_KEY='AQ.Ab8RN6LXdcbSiucJNoRfp1puJuX00RJ9INmAGQpGmUO2hvh8aQ';
+var STORAGE_KEY='asap_agent_hub_v11';
+var state={templates:[],airlines:[]},currentCategory='customer',lastSubject='',lastBody='';
+
+function el(i){return document.getElementById(i)}
+function qAll(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+function has(a,x){return a.indexOf(x)!==-1}
+function showBanner(m){var b=el('errorBanner');if(b){b.innerText=m;b.style.display='block'}}
+function cap(w){return w.charAt(0).toUpperCase()+w.slice(1)}
+function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+function escHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function escAttr(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
+function csvq(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'}
+function legacyCopy(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta)}
+function copyToClipboard(t,d){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(d,function(){legacyCopy(t);d()})}else{legacyCopy(t);d()}}
+function toast(m){var t=el('toast');if(!t)return;t.innerText=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3400)}
+function tokensIn(t){var m=String(t).match(/\{\{([^{}]+)\}\}/g)||[];var s={},o=[];for(var i=0;i<m.length;i++)if(!s[m[i]]){s[m[i]]=1;o.push(m[i])}return o}
+function tokenName(t){return t.slice(2,-2)}
+function sid(n){return 'cust-'+String(n).replace(/[^A-Za-z0-9_]/g,'_')}
+function fieldSpec(n){var c=n.charAt(0);if(c==='?')return{type:'yesno',name:n.slice(1),insert:n.slice(1)};if(c==='%')return{type:'amount',name:n.slice(1)};if(c==='#')return{type:'number',name:n.slice(1)};if(c==='@')return{type:'date',name:n.slice(1)};if(n==='(waived due to Travel Care service activation)')return{type:'yesno',name:n,insert:n};return{type:'text',name:n}}
+function prettifyToken(n){var t=String(n).replace(/^\s+|\s+$/g,'');if(/\s/.test(t))return t;if(t.indexOf('_')!==-1){var p=t.split('_'),o=[];for(var i=0;i<p.length;i++)if(p[i])o.push(cap(p[i]));return o.join(' ')}return t}
+function titleCaseName(v){return String(v).toLowerCase().replace(/(^|[\s\-])([a-z])/g,function(m,a,b){return a+b.toUpperCase()})}
+function fmtAmount(v){var t=String(v).replace(/^\s+|\s+$/g,'');if(!t)return '';if(t.indexOf('$')===-1&&!isNaN(parseFloat(t)))t='$'+t;return t}
+function fmtDate(v){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(v));if(!m)return String(v);var M=['January','February','March','April','May','June','July','August','September','October','November','December'];return M[parseInt(m[2],10)-1]+' '+parseInt(m[3],10)+', '+m[1]}
+function readBaked(){try{var t=el('bakedState').textContent;if(t&&t!=='null')return JSON.parse(t)}catch(e){}return null}
+var BAKED=readBaked();
+var IS_OWNER=(function(){if(BAKED&&BAKED.ownerLock)return false;try{var n=decodeURIComponent((location.href.split('/').pop()||'').split('?')[0]).toUpperCase();return n.indexOf(OWNER_LETTER.toUpperCase())!==-1}catch(e){return false}})();
+function requireOwner(cb){if(IS_OWNER)cb();else toast('Owner-only feature.')}
+var MASTER={templates:[
+ {id:"GEN-QUOTE-001",name:"General Quote & Products",category:"customer",text:"Dear {{PASSENGER}},\n\nAs advised, no changes were made to your reservation, and below you can find the airline's rules regarding exchanges and refunds.\n\nEXCHANGE:\n{{EXCHANGE}}\n\nREFUND\n{{REFUND}}\n\nSincerely,\n{{AGENT}}"},
+ {id:"ID-REQ-001",name:"ID Request / Airline Waiver",category:"internal",text:"Request to {{AIRLINE}} Airline by Asap Tickets, ITN Corp regarding PNR: {{PNR}}\n\nDear Team,\nKindly assist with requesting a {{REQUEST_TYPE}}.\n\nDear {{AIRLINE}} Team,\n{{PAX_DETAILS}}\nPlease let us know if we can proceed.\nThank you."}],
+ airlines:[{code:"DL",name:"Delta Air Lines",region:"USA",mainPhone:"800-221-1212",execPhone:"800-445-2493",execEmail:"agency@delta.com",refundEmail:"psgrref.delta@delta.com",medicalEmail:"",notes:"Consolidator desk."},{code:"UA",name:"United Airlines",region:"USA",mainPhone:"+1-800-864-8331",execPhone:"800-521-0810",execEmail:"",refundEmail:"",medicalEmail:"",notes:"Executive desk."}]};
+function loadState(){var s=null;try{s=localStorage.getItem(STORAGE_KEY)}catch(e){}if(s){try{state=JSON.parse(s)}catch(e){state=null}}else state=null;if(!state||!state.templates||!state.templates.length)state={templates:MASTER.templates,airlines:MASTER.airlines};if(!state.airlines||!state.airlines.length)state.airlines=MASTER.airlines}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}}
+window.onerror=function(m,s,l){showBanner('Something went wrong: '+m+' (line '+l+').')}
+function tryCloudLoad(d){try{fetch(DATA_URL,{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(x){if(x&&x.templates&&x.templates.length){state.templates=x.templates;if(x.airlines&&x.airlines.length)state.airlines=x.airlines;d(true)}else d(false)}).catch(function(){d(false)})}catch(e){d(false)}}
+
+// ===== GITHUB (Contents API only, bulletproof) =====
+function ghToken(){try{return localStorage.getItem(GH_TOKEN_KEY)||DEFAULT_GH_TOKEN}catch(e){return DEFAULT_GH_TOKEN}}
+function ghH(j){var h={'Accept':'application/vnd.github+json','Authorization':'Bearer '+ghToken()};if(j)h['Content-Type']='application/json';return h}
+function gj(u,o){return fetch(u,o).then(function(r){if(!r.ok){var e=new Error('HTTP '+r.status);e.status=r.status;throw e}return r.json()})}
+
+function saveGhToken(v){requireOwner(function(){var t=String(v||'').replace(/^\s+|\s+$/g,'');if(!t){toast('Paste a token first.');return}try{localStorage.setItem(GH_TOKEN_KEY,t);toast('GitHub token saved!')}catch(e){toast('Could not save token.')}})}
+
+function testConnection(){requireOwner(function(){var out=el('diagOut');out.innerHTML='<div class="diag">🔍 Testing...</div>';
+ var api='https://api.github.com/repos/'+GH_FULL;
+ gj(api,{headers:ghH(false)}).then(function(repo){
+  var html='<div class="diag"><b>✅ Repo exists:</b> yes<br><b>Name:</b> '+escHtml(repo.full_name||'')+'<br><b>Default branch:</b> '+escHtml(repo.default_branch||'')+'<br><b>Private:</b> '+(repo.private?'yes':'no')+'<br><b>Description:</b> '+escHtml(repo.description||'(none)')+'</div>';
+  return gj(api+'/contents/data.json?ref='+(repo.default_branch||'main'),{headers:ghH(false)}).then(function(){return html+'<div class="diag">✅ <b>Contents read:</b> OK</div>'}).catch(function(e){
+   if(e.status===404)return html+'<div class="diag">⚠️ <b>Contents read:</b> HTTP 404 — file doesn\'t exist yet (fresh repo). The push will CREATE it. ✅</div>';
+   if(e.status===403)return html+'<div class="diag">❌ <b>Contents read:</b> HTTP 403 — token lacks Contents permission.<br>👉 Go to github.com/settings/tokens and grant <b>Contents: Read and write</b> on asap-hub-7g3k.</div>';
+   return html+'<div class="diag">⚠️ <b>Contents read:</b> '+escHtml(e.message)+'</div>'
+  })
+ }).then(function(html){out.innerHTML=html}).catch(function(e){
+  var msg=e.message||'';var html='<div class="diag">❌ <b>Repo exists:</b> no (or token lacks access)<br><b>Error:</b> '+escHtml(msg);
+  if(msg.indexOf('404')!==-1)html+='<br><br>👉 The repo doesn\'t exist. Click <b>⚠️ Start Fresh</b> to create it.';
+  if(msg.indexOf('401')!==-1)html+='<br><br>👉 Token is invalid or expired. Paste a new one above.';
+  if(msg.indexOf('403')!==-1)html+='<br><br>👉 Token lacks access. Grant <b>Contents R/W</b> + <b>Administration R/W</b> on this repo.';
+  html+='</div>';out.innerHTML=html})
+})}
+
+// BULLETPROOF pushOneFile — handles 404 (create), 403 (permission), 422/409 (retry)
+function pushOneFile(path,content,msg,branch){
+ var api='https://api.github.com/repos/'+GH_FULL+'/contents/'+path+'?ref='+branch;
+ function attempt(at){
+  return gj(api,{headers:ghH(false),cache:'no-store'}).then(function(cur){
+   // File exists — PUT with sha
+   return gj(api,{method:'PUT',headers:ghH(true),body:JSON.stringify({message:msg,content:b64(content),sha:cur.sha,branch:branch})})
+  }).catch(function(e){
+   if(e.status===404){
+    // File doesn't exist — create without sha
+    return gj(api,{method:'PUT',headers:ghH(true),body:JSON.stringify({message:msg,content:b64(content),branch:branch})})
+   }
+   if(e.status===422&&at<2){
+    // "already exists" — re-GET sha, retry
+    return new Promise(function(res){setTimeout(function(){res(attempt(at+1))},500)})
+   }
+   if(e.status===409&&at<2){
+    // Conflict — wait longer, retry
+    return new Promise(function(res){setTimeout(function(){res(attempt(at+1))},1500)})
+   }
+   if(e.status===403){
+    throw new Error('❌ Token lacks Contents permission. Go to github.com/settings/tokens and grant "Contents: Read and write" on asap-hub-7g3k')
+   }
+   throw e
+  })
+ }
+ return attempt(0)
+}
+
+function syncWebsite(){requireOwner(function(){var b=el('syncBtn');if(b&&b.disabled)return;if(b)b.disabled=true;toast('Pushing via Contents API...');
+ var h=buildTeamHtml();var j=JSON.stringify({templates:state.templates,airlines:state.airlines,ownerLock:true,updated:new Date().toISOString()});
+ var branch='main';
+ gj('https://api.github.com/repos/'+GH_FULL,{headers:ghH(false)}).then(function(repo){
+  branch=repo.default_branch||'main';
+  return pushOneFile('index.html',h,'Update Agent Hub (engine)',branch)
+ }).then(function(){
+  return pushOneFile('data.json',j,'Update Agent Hub (data)',branch)
+ }).then(function(){
+  toast('✅ Website updated! Now click "Enable GitHub Pages" to make it live.');
+  if(b)b.disabled=false
+ }).catch(function(e){
+  toast('❌ Sync failed: '+e.message);
+  if(b)b.disabled=false
+ })
+})}
+
+function publishDataJSON(){requireOwner(function(){var j=JSON.stringify({templates:state.templates,airlines:state.airlines,ownerLock:true,updated:new Date().toISOString()});
+ gj('https://api.github.com/repos/'+GH_FULL,{headers:ghH(false)}).then(function(repo){var br=repo.default_branch||'main';return pushOneFile('data.json',j,'Update data',br)})
+ .then(function(){toast('Published!')}).catch(function(e){toast('Publish failed ('+e.message+')');downloadFile(j,'data.json','application/json')})
+})}
+
+function pullFromGitHub(){requireOwner(function(){toast('Pulling latest...');tryCloudLoad(function(ok){if(ok){saveState();refreshAll();toast('Latest data pulled!')}else toast('No data on GitHub.')})})}
+
+// Pages helpers
+function enablePages(){requireOwner(function(){el('pagesModal').style.display='flex'})}
+function closePagesModal(){el('pagesModal').style.display='none'}
+function verifyLiveSite(){requireOwner(function(){el('verifyModal').style.display='flex'})}
+function closeVerifyModal(){el('verifyModal').style.display='none'}
+
+// Manual upload fallback
+function downloadIndexHtml(){requireOwner(function(){var h=buildTeamHtml();downloadFile(h,'index.html','text/html');toast('index.html downloaded!')})}
+function downloadDataJson(){requireOwner(function(){var j=JSON.stringify({templates:state.templates,airlines:state.airlines,ownerLock:true,updated:new Date().toISOString()});downloadFile(j,'data.json','application/json');toast('data.json downloaded!')})}
+
+// Start Fresh
+function startFresh(){requireOwner(function(){el('freshModal').style.display='flex'})}
+function closeFreshModal(){el('freshModal').style.display='none'}
+function confirmStartFresh(){
+ closeFreshModal();
+ var api='https://api.github.com/repos/'+GH_FULL;
+ toast('️ Deleting repo...');
+ fetch(api,{method:'DELETE',headers:ghH(false)}).then(function(r){
+  if(r.status===404){/* ok */}
+  else if(!r.ok){throw new Error('Delete failed HTTP '+r.status+' — token may lack Administration permission. Delete manually at github.com/'+GH_FULL+'/settings')}
+  toast(' Recreating repo...');
+  return new Promise(function(res){setTimeout(res,3000)})
+ }).then(function(){
+  return gj('https://api.github.com/user/repos',{method:'POST',headers:ghH(true),body:JSON.stringify({name:GH_REPO,private:false,auto_init:true,default_branch:'main',description:'ASAP Agent Hub'})})
+ }).then(function(repo){
+  toast('✅ Repo recreated on branch '+(repo.default_branch||'main')+'. Click "Update Website" now.');
+ }).catch(function(e){
+  toast('❌ '+e.message);
+  var out=el('diagOut');if(out)out.innerHTML='<div class="diag"> '+escHtml(e.message)+'<br><br>👉 <a target="_blank" href="https://github.com/'+GH_FULL+'/settings" style="color:var(--blue)">Open repo settings to delete manually</a>, then <a target="_blank" href="https://github.com/new?name='+GH_REPO+'&private=0" style="color:var(--blue)">create a new public repo named '+GH_REPO+'</a> with a README.</div>'
+ })
+}
+
+function buildTeamHtml(){var at=null;var t0=qAll('.tab-content');for(var i=0;i<t0.length;i++)if(t0[i].classList.contains('active'))at=t0[i].id;normalizeDomForExport();var p={templates:state.templates,airlines:state.airlines,ownerLock:true};el('bakedState').textContent=JSON.stringify(p).replace(/</g,'\\u003C');var h='<!DOCTYPE html>\n'+document.documentElement.outerHTML;restoreOwnerView(at);return h}
+function normalizeDomForExport(){var t=qAll('.tab-content');for(var i=0;i<t.length;i++)t[i].classList.remove('active');var t0=el('tab-templates');if(t0)t0.classList.add('active');var b=qAll('.menu button');for(var j=0;j<b.length;j++)b[j].classList.remove('active');if(b.length)b[0].classList.add('active');var ob=el('ownerBadge');if(ob)ob.style.display='none';var mb=el('menuDataBtn');if(mb)mb.style.display='';var mo=el('addAirlineModal');if(mo)mo.style.display='none';var fm=el('freshModal');if(fm)fm.style.display='none';var pm=el('pagesModal');if(pm)pm.style.display='none';var vm=el('verifyModal');if(vm)vm.style.display='none';var to=el('toast');if(to){to.className='';to.innerText=''}var o=el('output');if(o)o.innerText='Select a template and click "Generate Email"...'}
+function restoreOwnerView(at){if(!IS_OWNER)return;var t=qAll('.tab-content');for(var i=0;i<t.length;i++)t[i].classList.remove('active');var t0=el(at)||el('tab-templates');if(t0)t0.classList.add('active');var n=(at||'tab-templates').replace('tab-','');var b=qAll('.menu button');for(var j=0;j<b.length;j++){b[j].classList.remove('active');if((b[j].getAttribute('onclick')||'').indexOf("'"+n+"'")!==-1)b[j].classList.add('active')}var ob=el('ownerBadge');if(ob)ob.style.display='inline-block'}
+function exportUpdatedFile(){requireOwner(function(){try{downloadFile(buildTeamHtml(),'ASAP-Hub-Team-Copy.html','text/html');toast('Team copy downloaded!')}catch(e){toast('Export failed: '+e.message)}})}
+function downloadFile(c,f,m){var b=new Blob([c],{type:m});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download=f;a.click();URL.revokeObjectURL(u)}
+function switchTab(n,e){if(n==='data'&&!IS_OWNER){toast('Owner-only.');return}var t=qAll('.tab-content');for(var i=0;i<t.length;i++)t[i].classList.remove('active');var b=qAll('.menu button');for(var j=0;j<b.length;j++)b[j].classList.remove('active');var t0=el('tab-'+n);if(t0)t0.classList.add('active');if(e&&e.target)e.target.classList.add('active');if(!e){for(var k=0;k<b.length;k++){if((b[k].getAttribute('onclick')||'').indexOf("'"+n+"'")!==-1)b[k].classList.add('active')}}if(n==='airlines')renderAirlines();if(n==='data'&&IS_OWNER)syncEditSelect()}
+function forceHomeForNonOwner(){var t=qAll('.tab-content');for(var i=0;i<t.length;i++)t[i].classList.remove('active');var t0=el('tab-templates');if(t0)t0.classList.add('active');var b=qAll('.menu button');for(var j=0;j<b.length;j++)b[j].classList.remove('active');if(b.length)b[0].classList.add('active');var mb=el('menuDataBtn');if(mb)mb.style.display='none';var ob=el('ownerBadge');if(ob)ob.style.display='none'}
+function setCategory(c){currentCategory=c;var a=el('wtab-customer'),b=el('wtab-internal');if(a&&b){if(c==='customer'){a.classList.add('active');b.classList.remove('active')}else{b.classList.add('active');a.classList.remove('active')}}rebuildTemplateOptions()}
+function currentTemplate(){var s=el('templateSelect');if(!s)return null;for(var i=0;i<state.templates.length;i++)if(state.templates[i].id===s.value)return state.templates[i];return null}
+function rebuildTemplateOptions(){var s=el('templateSelect');if(!s)return;s.innerHTML='';for(var i=0;i<state.templates.length;i++){var t=state.templates[i];if(t.category!==currentCategory)continue;var o=document.createElement('option');o.value=t.id;o.innerText=t.name;s.appendChild(o)}updateFieldVisibility();updateSectionBadge()}
+var FIELDS=[{id:'passenger',key:'PASSENGER',label:'Passenger Name',type:'text',full:false},{id:'agent',key:'AGENT',label:'Agent Name',type:'text',full:false},{id:'exchange',key:'EXCHANGE',label:'Exchange Fees Block',type:'textarea',full:true},{id:'refund',key:'REFUND',label:'Refund Penalty',type:'textarea',full:true},{id:'proof',key:'PROOF',label:'Proof of Relationship',type:'text',full:false},{id:'airline',key:'AIRLINE',label:'Airline Code',type:'text',full:false},{id:'pnr',key:'PNR',label:'PNR / Booking Ref',type:'text',full:false},{id:'rloc',key:'RLOC',label:'RLOC Reference',type:'text',full:true},{id:'requestType',key:'REQUEST_TYPE',label:'Request Type',type:'text',full:false},{id:'paxDetails',key:'PAX_DETAILS',label:'Passenger Details Block',type:'textarea',full:true},{id:'phone',key:'PHONE',label:'Phone Number',type:'text',full:false},{id:'calldate',key:'CALLDATE',label:'Call was on',type:'text',full:false}];
+function renderFields(){var c=el('fieldsContainer');if(!c)return;c.innerHTML='';for(var i=0;i<FIELDS.length;i++){var f=FIELDS[i];var w=document.createElement('div');w.id='wrap-'+f.id;if(f.full)w.className='full';var l=document.createElement('label');l.innerText=f.label+':';w.appendChild(l);var inp;if(f.type==='textarea')inp=document.createElement('textarea');else{inp=document.createElement('input');inp.type='text'}inp.id='inp-'+f.id;w.appendChild(inp);c.appendChild(w)}}
+function knownTokenList(){var k=[];for(var i=0;i<FIELDS.length;i++)k.push('{{'+FIELDS[i].key+'}}');return k}
+function makeControl(sp){if(sp.type==='yesno'){var s=document.createElement('select');s.id=sid(sp.raw||sp.name);var a=document.createElement('option');a.value='yes';a.innerText='Yes';var b=document.createElement('option');b.value='no';b.innerText='No';s.appendChild(a);s.appendChild(b);return s}var i=document.createElement('input');i.id=sid(sp.raw||sp.name);if(sp.type==='amount'){i.type='text';i.placeholder='e.g., 300.00'}else if(sp.type==='number'){i.type='number'}else if(sp.type==='date'){i.type='date'}else i.type='text';return i}
+function updateFieldVisibility(){var t=currentTemplate();var txt=t?t.text:'';var tk=tokensIn(txt);var afw=el('airlineFillWrap');if(afw)afw.style.display=(t&&t.id==='ID-REQ-001')?'block':'none';var rw=el('refundableWrap');if(rw)rw.style.display=(t&&t.id==='GEN-QUOTE-001')?'block':'none';for(var i=0;i<FIELDS.length;i++){var f=FIELDS[i];var w=el('wrap-'+f.id);if(!w)continue;w.style.display=has(tk,'{{'+f.key+'}}')?'block':'none'}var cf=el('customFields');if(!cf)return;cf.innerHTML='';var kn=knownTokenList();for(var j=0;j<tk.length;j++){var tok=tk[j];if(has(kn,tok))continue;var raw=tokenName(tok);var sp=fieldSpec(raw);sp.raw=raw;var d=document.createElement('div');d.className='full';var l=document.createElement('label');l.innerText=(sp.type==='yesno'?prettifyToken(sp.name)+'? (Yes/No)':sp.type==='amount'?prettifyToken(sp.name)+' ($)':prettifyToken(sp.name)+':');d.appendChild(l);d.appendChild(makeControl(sp));cf.appendChild(d)}}
+function updateSectionBadge(){var b=el('sectionBadge');if(!b)return;if(currentCategory==='internal'){b.innerText='INTERNAL';b.className='badge internal'}else{b.innerText='CUSTOMER';b.className='badge customer'}}
+function onTemplateChange(){updateFieldVisibility();updateSectionBadge()}
+function initDropdowns(){rebuildTemplateOptions();var s=el('airlineQuickFill');if(!s)return;s.innerHTML='<option value="">-- Select Airline --</option>';for(var i=0;i<state.airlines.length;i++){var a=state.airlines[i];var o=document.createElement('option');o.value=a.code;o.innerText=a.code+' - '+a.name;s.appendChild(o)}}
+function syncEditSelect(){var s=el('editTemplateSelect');if(!s)return;var mt=el('templateSelect');var want=mt&&mt.value?mt.value:'';s.innerHTML='';var o=document.createElement('option');o.value='NEW';o.innerText='+ New Template';s.appendChild(o);for(var i=0;i<state.templates.length;i++){var t=state.templates[i];var o2=document.createElement('option');o2.value=t.id;o2.innerText=t.name+' ('+t.category+')';s.appendChild(o2)}var f=false;for(var j=0;j<s.options.length;j++)if(s.options[j].value===want)f=true;s.value=f?want:'NEW';loadTemplateForEdit()}
+function loadTemplateForEdit(){var s=el('editTemplateSelect');var d=el('btnDeleteTemplate');if(!s)return;if(s.value==='NEW'){el('tplName').value='';el('tplCategory').value=currentCategory;el('tplText').value='';if(d)d.style.display='none'}else{var t=null;for(var i=0;i<state.templates.length;i++)if(state.templates[i].id===s.value)t=state.templates[i];if(t){el('tplName').value=t.name;el('tplCategory').value=t.category;el('tplText').value=t.text;if(d)d.style.display='inline-block'}}}
+var lastTemplateSnapshot=null;
+function saveTemplate(){requireOwner(function(){var s=el('editTemplateSelect');var n=el('tplName').value.replace(/^\s+|\s+$/g,'');var c=el('tplCategory').value;var raw=el('tplText').value;if(!n||!raw){toast('Name and text required.');return}var tid=s.value!=='NEW'?s.value:null;if(!tid){for(var k=0;k<state.templates.length;k++)if(state.templates[k].name.toLowerCase()===n.toLowerCase()){tid=state.templates[k].id;break}}var pv=null;if(tid){for(var q=0;q<state.templates.length;q++)if(state.templates[q].id===tid)pv={id:state.templates[q].id,name:state.templates[q].name,category:state.templates[q].category,text:state.templates[q].text}}if(tid){lastTemplateSnapshot={action:'edit',prev:pv};for(var i=0;i<state.templates.length;i++)if(state.templates[i].id===tid){state.templates[i].name=n;state.templates[i].category=c;state.templates[i].text=raw}toast('Template updated!')}else{var nid='TPL-'+Date.now();lastTemplateSnapshot={action:'add',id:nid};state.templates.push({id:nid,name:n,category:c,text:raw});toast('Template added!')}saveState();initDropdowns();syncEditSelect()})}
+function undoLastTemplateSave(){if(!lastTemplateSnapshot){toast('Nothing to undo.');return}var s=lastTemplateSnapshot;if(s.action==='edit'&&s.prev){for(var i=0;i<state.templates.length;i++)if(state.templates[i].id===s.prev.id)state.templates[i]=s.prev}else if(s.action==='add'){var k=[];for(var j=0;j<state.templates.length;j++)if(state.templates[j].id!==s.id)k.push(state.templates[j]);state.templates=k}lastTemplateSnapshot=null;saveState();refreshAll();toast('↩ Undone.')}
+function deleteTemplate(){requireOwner(function(){var s=el('editTemplateSelect');if(!s||s.value==='NEW')return;if(!confirm('Delete this template?'))return;var k=[];for(var i=0;i<state.templates.length;i++)if(state.templates[i].id!==s.value)k.push(state.templates[i]);state.templates=k;saveState();initDropdowns();syncEditSelect();toast('Deleted.')})}
+function autoFillAirline(){var s=el('airlineQuickFill');if(!s||!s.value)return;var f=el('inp-airline');if(f){f.value=s.value;toast('Auto-filled: '+s.value)}}
+function generateEmail(){var t=currentTemplate();if(!t)return;var text=t.text;if(t.id==='GEN-QUOTE-001'){var rs=el('refundableSel');var ri=el('inp-refund');var rv=ri?ri.value:'';var nr=(rs&&rs.value==='no')||/non[\s\-]?ref/i.test(rv);if(nr){var iR=text.indexOf('\nREFUND');var iN=text.indexOf('Note:');var end=iN!==-1&&iN>iR?iN:text.length;text=text.slice(0,iR)+'\nREFUND\n\nTICKET IS NON-REFUNDABLE.\n\n'+text.slice(end)}}for(var i=0;i<FIELDS.length;i++){var f=FIELDS[i];var tok='{{'+f.key+'}}';if(text.indexOf(tok)===-1)continue;var inp=el('inp-'+f.id);var v=inp&&inp.value?inp.value:'['+f.label.toUpperCase()+']';if(f.key==='PASSENGER')v=titleCaseName(v);text=text.split(tok).join(v)}var tk=tokensIn(t.text);var kn=knownTokenList();for(var j=0;j<tk.length;j++){var tok2=tk[j];if(has(kn,tok2))continue;var raw=tokenName(tok2);var sp=fieldSpec(raw);var c=el(sid(raw));if(!c)continue;var r;if(sp.type==='yesno')r=c.value==='no'?'':(sp.insert||sp.name);else if(sp.type==='amount')r=c.value?fmtAmount(c.value):'['+sp.name+']';else if(sp.type==='date')r=c.value?fmtDate(c.value):'['+sp.name+']';else r=c.value||'['+sp.name+']';if(raw.toLowerCase()==='passenger')r=titleCaseName(r);text=text.split(tok2).join(r)}lastSubject='';lastBody=text;var fe=text.indexOf('\n');if(fe>-1){var first=text.slice(0,fe).replace(/^\s+|\s+$/g,'');if(first&&!/^dear/i.test(first)){lastSubject=first;lastBody=text.slice(fe+1).replace(/^\s*\n/,'')}}el('output').innerText=text;var cs=el('copySubjectBtn');if(cs)cs.style.display=lastSubject?'inline-block':'none'}
+function copyOutput(){var body=lastSubject?lastBody:el('output').innerText;copyToClipboard(body,function(){toast(lastSubject?'📋 Body copied (subject separate)!':'📋 Email Copied!')})}
+function copySubject(){if(!lastSubject){toast('No subject detected.');return}copyToClipboard(lastSubject,function(){toast('📋 Subject copied!')})}
+function clearFields(){for(var i=0;i<FIELDS.length;i++){var inp=el('inp-'+FIELDS[i].id);if(inp)inp.value=''}var c=qAll('#customFields input');for(var j=0;j<c.length;j++)c[j].value='';var s=qAll('#customFields select');for(var k=0;k<s.length;k++)s[k].value='yes';var rs=el('refundableSel');if(rs)rs.value='yes';var q=el('airlineQuickFill');if(q)q.value='';el('output').innerText='Select a template and click "Generate Email"...';lastSubject='';lastBody='';var cs=el('copySubjectBtn');if(cs)cs.style.display='none'}
+function renderAirlines(){var g=el('airlineGrid');if(!g)return;var se=el('airlineSearch');var s=se?se.value.toLowerCase():'';g.innerHTML='';for(var i=0;i<state.airlines.length;i++){var a=state.airlines[i];var h=(a.name+' '+a.code+' '+(a.region||'')).toLowerCase();if(s&&h.indexOf(s)===-1)continue;var eb=IS_OWNER?'<span><button class="btn btn-ghost btn-sm" onclick="editAirline('+i+')">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteAirline('+i+')">Del</button></span>':'';var c=document.createElement('div');c.className='airline-card';c.innerHTML='<h3><span><span class="code-tag">'+escHtml(a.code)+'</span>'+escHtml(a.name)+'</span>'+eb+'</h3><p><strong>Region:</strong> <span class="val">'+escHtml(a.region)+'</span></p><p><strong>Main:</strong> <span class="val">'+escHtml(a.mainPhone||'-')+'</span> <button class="btn btn-ghost btn-sm" onclick="copyText(\''+escAttr(a.mainPhone)+'\')">Copy</button></p><p><strong>Exec:</strong> <span class="val">'+escHtml(a.execPhone||'-')+'</span> <button class="btn btn-ghost btn-sm" onclick="copyText(\''+escAttr(a.execPhone)+'\')">Copy</button></p><p><strong>Email:</strong> <span class="val">'+escHtml(a.execEmail||'-')+'</span></p><p><strong>Refund:</strong> <span class="val">'+escHtml(a.refundEmail||'-')+'</span></p>';g.appendChild(c)}}
+function copyText(t){if(!t||t==='-'){toast('Nothing to copy.');return}copyToClipboard(t,function(){toast('Copied: '+t)})}
+function openAddAirlineModal(){requireOwner(function(){var ids=['mod-code','mod-name','mod-region','mod-mainPhone','mod-execPhone','mod-execEmail','mod-refundEmail','mod-medicalEmail','mod-notes'];for(var i=0;i<ids.length;i++){var m=el(ids[i]);if(m)m.value=''}el('editAirlineIdx').value='';el('addAirlineModal').style.display='flex'})}
+function editAirline(i){requireOwner(function(){var a=state.airlines[i];if(!a)return;el('editAirlineIdx').value=i;el('mod-code').value=a.code;el('mod-name').value=a.name;el('mod-region').value=a.region;el('mod-mainPhone').value=a.mainPhone;el('mod-execPhone').value=a.execPhone;el('mod-execEmail').value=a.execEmail;el('mod-refundEmail').value=a.refundEmail;el('mod-medicalEmail').value=a.medicalEmail;el('mod-notes').value=a.notes;el('addAirlineModal').style.display='flex'})}
+function saveAirline(){var h=el('editAirlineIdx');var idx=h?h.value:'';var a={code:el('mod-code').value,name:el('mod-name').value,region:el('mod-region').value,mainPhone:el('mod-mainPhone').value,execPhone:el('mod-execPhone').value,execEmail:el('mod-execEmail').value,refundEmail:el('mod-refundEmail').value,medicalEmail:el('mod-medicalEmail').value,notes:el('mod-notes').value};if(!a.code||!a.name){toast('Code and Name required.');return}if(idx==='')state.airlines.push(a);else state.airlines[parseInt(idx,10)]=a;saveState();renderAirlines();initDropdowns();closeModal();toast('Airline Saved!')}
+function deleteAirline(i){requireOwner(function(){if(!confirm('Delete this airline?'))return;state.airlines.splice(i,1);saveState();renderAirlines();initDropdowns();toast('Deleted.')})}
+function closeModal(){el('addAirlineModal').style.display='none'}
+
+// ===== EXCHANGE CALCULATOR (strict, verified) =====
+var TAX_EXCL={XT:1,ADT:1,TTL:1,USD:1,TAX:1,TOT:1};
+var NONREF={XG:1,BU:1,BZ:1,CR:1,DI:1,FV:1,FW:1,E2:1,E3:1,ED:1,EQ:1,I6:1,K3:1,L8:1,MA:1,N7:1,N9:1,O7:1,OU:1,PA:1,PE:1,PH:1,PI:1,S4:1,XL:1};
+function parsePricing(text){var toks=String(text).replace(/\s+/g,' ').split(' ');var res={fare:null,taxes:{},total:null,xt:null};var numRe=/^(\d+(?:\.\d+)?)$/;var usdRe=/^USD(\d+(?:\.\d+)?)$/;var adtRe=/^USD(\d+(?:\.\d+)?)ADT$/;var ttlRe=/^(\d+(?:\.\d+)?)TTL$/;var xtRe=/^(\d+(?:\.\d+)?)XT$/;var combRe=/^(\d+(?:\.\d+)?)([A-Z]{1,3}\d?)$/;var codeRe=/^[A-Z]{1,3}\d?$/;var i=0;while(i<toks.length){var tk=toks[i];var m;
+ if(tk==='FARE'||tk==='BASE'){var j=i+1;if(toks[j]==='USD'&&toks[j+1]&&numRe.test(toks[j+1])){res.fare=parseFloat(toks[j+1]);i=j+2;continue}var mU=toks[j]?toks[j].match(usdRe):null;if(mU){res.fare=parseFloat(mU[1]);i=j+1;continue}if(toks[j]&&numRe.test(toks[j])){res.fare=parseFloat(toks[j]);i=j+1;continue}i++;continue}
+ if(tk==='TOT'){var j2=i+1;if(toks[j2]==='USD'&&toks[j2+1]&&numRe.test(toks[j2+1])){res.total=parseFloat(toks[j2+1]);i=j2+2;continue}var mT=toks[j2]?toks[j2].match(usdRe):null;if(mT){res.total=parseFloat(mT[1]);i=j2+1;continue}i++;continue}
+ if((m=tk.match(adtRe))){res.total=parseFloat(m[1]);i++;continue}
+ if((m=tk.match(ttlRe))){res.total=parseFloat(m[1]);i++;continue}
+ if((m=tk.match(xtRe))){res.xt=parseFloat(m[1]);i++;continue}
+ if(tk==='TAX'){var j3=i+1,code=null,amt=null;if(j3<toks.length){var c1=toks[j3].match(combRe);if(c1&&!TAX_EXCL[c1[2]]){amt=parseFloat(c1[1]);code=c1[2];i=j3+1}else if(codeRe.test(toks[j3])&&!TAX_EXCL[toks[j3]]){code=toks[j3];if(toks[j3+1]&&numRe.test(toks[j3+1])){amt=parseFloat(toks[j3+1]);i=j3+2}else i=j3+1}else i=j3+1}else i=j3;if(code&&amt!==null)res.taxes[code]=(res.taxes[code]||0)+amt;continue}
+ var c2=tk.match(combRe);if(c2&&!TAX_EXCL[c2[2]]){res.taxes[c2[2]]=(res.taxes[c2[2]]||0)+parseFloat(c2[1]);i++;continue}
+ i++}return res}
+function parsePricingB(text){var res={fare:null,taxes:{},total:null,xt:null};var s=String(text).replace(/\s+/g,' ');var mF=s.match(/(?:BASE\s+)?FARE\s*USD\s*(\d+\.\d{2})/);if(mF)res.fare=parseFloat(mF[1]);var mT=s.match(/TOT\s*USD\s*(\d+\.\d{2})/)||s.match(/(\d+\.\d{2})\s*TTL/)||s.match(/USD(\d+\.\d{2})\s*ADT/);if(mT)res.total=parseFloat(mT[1]);var mX=s.match(/(\d+\.\d{2})\s*XT/);if(mX)res.xt=parseFloat(mX[1]);var r1=/(\d+\.\d{2})\s*([A-Z]{1,3}\d?)\b/g,m;while((m=r1.exec(s))){var c=m[2];if(TAX_EXCL[c])continue;res.taxes[c]=(res.taxes[c]||0)+parseFloat(m[1])}var r2=/\bTAX\s+([A-Z]{1,3}\d?)\s+(\d+\.\d{2})/g;while((m=r2.exec(s))){var c2=m[1];if(TAX_EXCL[c2])continue;res.taxes[c2]=(res.taxes[c2]||0)+parseFloat(m[2])}return res}
+function sgn(v){return (v<0?'-':'+')+Math.abs(v).toFixed(2)}
+function applyRules(oP,nP){var fD=(nP.fare||0)-(oP.fare||0);var codes={};var k;for(k in oP.taxes)codes[k]=1;for(k in nP.taxes)codes[k]=1;var tD=0,lines=[];var keys=Object.keys(codes).sort();for(var x=0;x<keys.length;x++){var c=keys[x];var o=oP.taxes[c]||0,n=nP.taxes[c]||0,d=n-o;
+ if(o>0&&n>0){if(d>0){tD+=d;lines.push('- '+c+' '+sgn(d)+'  ('+o.toFixed(2)+' -> '+n.toFixed(2)+')')}else if(d<0){lines.push('- '+c+' '+sgn(d)+'  ('+o.toFixed(2)+' -> '+n.toFixed(2)+')  lower in new - NOT counted')}}
+ else if(n>0&&o===0){tD+=n;lines.push('- '+c+' '+sgn(n)+'  NEW tax (not in old)')}
+ else if(o>0&&n===0){if(NONREF[c]){tD+=o;lines.push('- '+c+' +'+o.toFixed(2)+'  NON-REFUNDABLE tax (in old, not in new) - added')}}}
+ return{fareD:fD,taxD:tD,lines:lines}}
+function calcFareTax(){var oT=el('calcOld').value,nT=el('calcNew').value;if(!oT.replace(/\s/g,'')||!nT.replace(/\s/g,'')){toast('Paste both OLD and NEW pricing.');return}var oA=parsePricing(oT),nA=parsePricing(nT);if(oA.fare===null||nA.fare===null){toast('Could not read BASE FARE from both boxes.');return}if((oA.total!==null&&oA.fare>oA.total)||(nA.total!==null&&nA.fare>nA.total)){el('calcOut').innerText='⚠ CHECK INPUT — parsed fare is greater than total. Verify the pasted pricing.';toast('⚠ CHECK INPUT');return}var A=applyRules(oA,nA);var B=applyRules(parsePricingB(oT),parsePricingB(nT));
+ var out='FARE DIFFERENCE: '+sgn(A.fareD)+'  ('+(oA.fare||0).toFixed(2)+' -> '+(nA.fare||0).toFixed(2)+')\n';
+ out+='TAXES:\n'+(A.lines.length?A.lines.join('\n'):'(none)')+'\n';
+ out+='TOTAL TAX DIFFERENCE: '+sgn(A.taxD)+'\n';
+ out+='FINAL TOTAL: FARE '+sgn(A.fareD)+' + TAX '+sgn(A.taxD)+' = '+sgn(A.fareD+A.taxD)+'\n';
+ var agree=(Math.abs(A.fareD-B.fareD)<0.01)&&(Math.abs(A.taxD-B.taxD)<0.01);
+ out+=agree?'-------------------------\n🛡 VERIFICATION: second calculator AGREEs.':'-------------------------\n⚠ VERIFY MANUALLY! Second calculator says FARE '+sgn(B.fareD)+' / TAX '+sgn(B.taxD)+'.';
+ el('calcOut').innerText=out;toast(agree?'Calculated + verified ✅':'Calculated — VERIFY MANUALLY ⚠')}
+function copyCalc(){var v=el('calcOut').innerText;if(!v||v.indexOf('result will appear')!==-1){toast('Calculate first.');return}copyToClipboard(v,function(){toast('Result copied!')})}
+
+// ===== AI WRITING ASSISTANT =====
+function aiInstruction(m){if(m==='rephrase')return 'Professional airline customer-service writer. Rephrase politely, keep meaning and facts. Reply ONLY rephrased text.';return 'Expert proofreader for airline customer-service. Fix ALL grammar/spelling/punctuation/capitalization. Keep meaning and facts. Reply ONLY corrected text.'}
+function cleanAiOut(t){t=String(t).replace(/^\s+|\s+$/g,'').replace(/^["'`]+|["'`]+$/g,'');t=t.replace(/^Here is the (corrected|rephrased)[^:]*:\s*/i,'');return t}
+function geminiOpenAI(key,m,text){var M=['gemini-2.0-flash','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-1.5-flash'];function att(i){if(i>=M.length)return Promise.reject(new Error('Gemini 404'));return fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:M[i],messages:[{role:'system',content:aiInstruction(m)},{role:'user',content:text}]})}).then(function(r){if(!r.ok)throw new Error('Gemini '+r.status);return r.json()}).then(function(j){var t=j&&j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;if(!t)throw new Error('Gemini empty');return cleanAiOut(t)}).catch(function(){return att(i+1)})}return att(0)}
+function geminiNative(key,m,text){var M=['gemini-2.0-flash','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-1.5-flash'];function att(i,q){if(i>=M.length)return Promise.reject(new Error('Gemini 404'));var url='https://generativelanguage.googleapis.com/v1beta/models/'+M[i]+':generateContent'+(q?'?key='+encodeURIComponent(key):'');var hd={'Content-Type':'application/json'};if(!q)hd['x-goog-api-key']=key;return fetch(url,{method:'POST',headers:hd,body:JSON.stringify({contents:[{parts:[{text:aiInstruction(m)+'\n\n'+text}]}]})}).then(function(r){if(!r.ok)throw new Error('Gemini '+r.status);return r.json()}).then(function(j){var t=j&&j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts&&j.candidates[0].content.parts[0]&&j.candidates[0].content.parts[0].text;if(!t)throw new Error('Gemini empty');return cleanAiOut(t)}).catch(function(){return q?att(i+1,false):att(i,true)})}return att(0,false)}
+function pollinate(m,text){return fetch('https://text.pollinations.ai/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'system',content:aiInstruction(m)},{role:'user',content:text}]})}).then(function(r){if(!r.ok)throw new Error('Online '+r.status);return r.text()}).then(function(t){t=cleanAiOut(t);if(!t)throw new Error('Online empty');return t})}
+function pollinateGet(m,text){return fetch('https://text.pollinations.ai/'+encodeURIComponent(aiInstruction(m)+'\n\n'+text)).then(function(r){if(!r.ok)throw new Error('Online '+r.status);return r.text()}).then(function(t){t=cleanAiOut(t);if(!t)throw new Error('Online empty');return t})}
+var TYPO={'posseble':'possible','possable':'possible','posible':'possible','comittment':'commitment','committment':'commitment','acommodate':'accommodate','occured':'occurred','recieve':'receive','recieved':'received','seperate':'separate','definately':'definitely','grammer':'grammar','writting':'writing','begining':'beginning','gaurantee':'guarantee','neccessary':'necessary','untill':'until','tommorow':'tomorrow','wich':'which','teh':'the','thier':'their','beleive':'believe','acheive':'achieve','custmer':'customer','costumer':'customer','refuned':'refunded','tickt':'ticket','boooking':'booking','reservaton':'reservation','confimation':'confirmation','itinery':'itinerary','passanger':'passenger','shoudl':'should','woudl':'would','coudl':'could','finaly':'finally','actualy':'actually','unfortunatly':'unfortunately','sincerly':'sincerely','thankyou':'thank you','plz':'please','pls':'please','cant':'cannot','wont':'will not','dont':'do not','didnt':'did not','isnt':'is not','arent':'are not','wasnt':'was not','werent':'were not','aswell':'as well','alot':'a lot','infact':'in fact'};
+function fixGrammar(src){var masks=[];var t=String(src).replace(/(?:https?:\/\/|www\.)\S+|[\w.+-]+@[\w-]+\.[\w.]+/g,function(m){masks.push(m);return '\u0000'+(masks.length-1)+'\u0000'});t=t.replace(/[ \t]+\n/g,'\n');t=t.replace(/\n{3,}/g,'\n\n');t=t.replace(/ +([,.;:!?])/g,'$1');t=t.replace(/,([A-Za-z])/g,', $1');t=t.replace(/([.!?])([A-Za-z])/g,function(m,a,b){return a+' '+b.toUpperCase()});t=t.replace(/(^|\n)([a-z])/g,function(m,a,b){return a+b.toUpperCase()});t=t.replace(/\bi\b/g,'I');t=t.replace(/ {2,}/g,' ');t=t.replace(/,{2,}/g,',');t=t.replace(/\.{3,}/g,'...');t=t.replace(/!{2,}/g,'!');t=t.replace(/ ([,.!?])/g,'$1');t=t.replace(/\b(\w+)\s+\1\b/gi,'$1');for(var k in TYPO){if(TYPO.hasOwnProperty(k))t=t.replace(new RegExp('\\b'+k+'\\b','gi'),TYPO[k])}t=t.replace(/\u0000(\d+)\u0000/g,function(m,i){return masks[+i]});return t}
+function rephraseLocal(text){var t=fixGrammar(text);var R={'i want to':'I would like to','we cant':'we are unable to','sorry for the delay':'we apologize for the delay','sorry for any inconvenience':'we apologize for any inconvenience','thanks':'thank you','as soon as possible':'at your earliest convenience','let me know':'please let me know','look into':'review','sort out':'resolve'};for(var k in R){if(R.hasOwnProperty(k))t=t.replace(new RegExp(k,'gi'),R[k])}t=t.replace(/(^|\n)([a-z])/g,function(m,a,b){return a+b.toUpperCase()});return t}
+function aiProcess(m){var text=el('gramIn').value.replace(/^\s+|\s+$/g,'');if(!text){toast('Paste some text first.');return}toast('AI is working...');var done=false;var errs=[];function offline(){if(done)return;done=true;el('gramOut').value=(m==='rephrase')?rephraseLocal(text):fixGrammar(text);toast('Offline ('+errs.join(' / ')+')')}var key=getGeminiKey();
+ geminiOpenAI(key,m,text).then(function(o){if(done)return;done=true;el('gramOut').value=o;toast('Done with Gemini AI!')})
+ .catch(function(e){errs.push(e.message||'Gemini err');return geminiNative(key,m,text)})
+ .then(function(o){if(done)return;done=true;el('gramOut').value=o;toast('Done with Gemini AI!')})
+ .catch(function(e){errs.push(e.message||'Gemini err');return pollinate(m,text)})
+ .then(function(o){if(done)return;done=true;el('gramOut').value=o;toast('Done with Online AI!')})
+ .catch(function(e){errs.push(e.message||'Online err');return pollinateGet(m,text)})
+ .then(function(o){if(done)return;done=true;el('gramOut').value=o;toast('Done with Online AI!')})
+ .catch(function(e){errs.push(e.message||'Online err');offline()});
+ setTimeout(function(){if(!done)offline()},15000)}
+function getGeminiKey(){try{return localStorage.getItem(GEMINI_KEY_STORE)||DEFAULT_GEMINI_KEY}catch(e){return DEFAULT_GEMINI_KEY}}
+function localOnly(){var t=el('gramIn').value.replace(/^\s+|\s+$/g,'');if(!t){toast('Paste some text first.');return}el('gramOut').value=fixGrammar(t);toast('Corrected with built-in engine (Offline).')}
+function copyGram(){var v=el('gramOut').value;if(!v){toast('Nothing to copy.');return}copyToClipboard(v,function(){toast('Copied result!')})}
+
+// ===== TIMER =====
+var timerEnd=0,timerRemaining=0,timerInterval=null,timerRunning=false,alarmInterval=null,alarmOn=false,audioCtx=null;
+function ensureAudio(){if(!audioCtx){try{var AC=window.AudioContext||window.webkitAudioContext;if(AC)audioCtx=new AC()}catch(e){}}if(audioCtx&&audioCtx.state==='suspended'){try{audioCtx.resume()}catch(e){}}}
+function beep(f,d){if(!audioCtx)return;try{var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='square';o.frequency.value=f;g.gain.setValueAtTime(0.25,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d+0.02)}catch(e){}}
+function tickSound(){beep(1200,0.07)}
+function fmtTime(ms){var t=Math.max(0,Math.ceil(ms/1000));var m=Math.floor(t/60),s=t%60;return (m<10?'0':'')+m+':'+(s<10?'0':'')+s}
+function renderTimer(){var d=el('timerDisplay');if(!d)return;var ms=timerRunning?(timerEnd-Date.now()):timerRemaining;if(timerRunning&&ms<=0){timerExpired();return}d.innerText=fmtTime(ms)}
+function startTimer(){ensureAudio();stopAlarm();if(timerRunning)return;if(timerRemaining<=0){var m=parseInt(el('timerMin').value,10)||0;var s=parseInt(el('timerSec').value,10)||0;timerRemaining=(m*60+s)*1000}if(timerRemaining<=0){toast('Set a time first.');return}timerEnd=Date.now()+timerRemaining;timerRunning=true;if(!timerInterval)timerInterval=setInterval(renderTimer,250);renderTimer();el('timerStatus').innerText='Running...';toast('Timer started.')}
+function pauseTimer(){if(!timerRunning)return;timerRemaining=Math.max(0,timerEnd-Date.now());timerRunning=false;renderTimer();el('timerStatus').innerText='Paused.'}
+function resetTimer(){timerRunning=false;timerRemaining=0;stopAlarm();el('timerDisplay').innerText='00:00';el('timerDisplay').className='timer-display';el('timerStatus').innerText='Ready.'}
+function timerExpired(){timerRunning=false;timerRemaining=0;if(timerInterval){clearInterval(timerInterval);timerInterval=null}el('timerDisplay').innerText="00:00 - TIME'S UP!";el('timerDisplay').className='timer-display alarm';el('timerStatus').innerText="Time's up!";startAlarm()}
+function startAlarm(){if(alarmOn)return;alarmOn=true;ensureAudio();tickSound();alarmInterval=setInterval(function(){if(alarmOn)tickSound()},1000)}
+function stopAlarm(){alarmOn=false;if(alarmInterval){clearInterval(alarmInterval);alarmInterval=null}el('timerDisplay').className='timer-display';el('timerDisplay').innerText='00:00'}
+function exportAllJSON(){requireOwner(function(){downloadFile(JSON.stringify(state,null,2),'asap_hub_backup.json','application/json');toast('Backup downloaded!')})}
+function importAllJSON(e){requireOwner(function(){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);if(d.templates&&d.airlines){state=d;saveState();refreshAll();toast('Restored!')}}catch(err){toast('Invalid JSON.')}};r.readAsText(f);e.target.value=''})}
+function resetAllData(){requireOwner(function(){if(!confirm('Erase all custom data and reset?'))return;state={templates:MASTER.templates,airlines:MASTER.airlines};saveState();refreshAll();toast('Reset.')})}
+function refreshAll(){initDropdowns();renderFields();updateFieldVisibility();updateSectionBadge();renderAirlines();syncEditSelect()}
+window.onload=function(){try{el('year').innerText=new Date().getFullYear();loadState();refreshAll();renderTimer();if(IS_OWNER){el('ownerBadge').style.display='inline-block';el('hubTag').innerText='AGENT HUB '+HUB_VERSION}else{forceHomeForNonOwner();el('hubTag').innerText='AGENT HUB'}toast('Ready: '+state.templates.length+' templates | '+state.airlines.length+' airlines');tryCloudLoad(function(ok){if(ok){refreshAll();toast('☁️ Latest team data loaded.')}else if(state.templates.length<=2){toast('⚠ Using built-in fallback. Use Settings > Pull latest.')}})}catch(e){showBanner('Startup error: '+e.message)}};
+</script>
+
+
+</body></html>
